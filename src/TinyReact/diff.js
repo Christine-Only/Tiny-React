@@ -31,7 +31,6 @@ export default function diff(virtualDOM, container, oldDOM) {
     // 删除节点-发生在节点更新以后并且发生在同一个父节点下的所有子节点身上
     // 获取旧节点
     let oldChildNodes = oldDOM.childNodes;
-    console.log('oldChildNodes: ', oldChildNodes);
     // 如果旧节点的数量多于要渲染的新节点的长度
     if (oldChildNodes.length > virtualDOM.children.length) {
       for (
@@ -39,7 +38,7 @@ export default function diff(virtualDOM, container, oldDOM) {
         i > virtualDOM.children.length - 1;
         i--
       ) {
-        unmountNode(oldChildNodes[i])
+        unmountNode(oldChildNodes[i]);
       }
     }
   }

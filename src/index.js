@@ -1,8 +1,6 @@
-
 import TinyReact from "./TinyReact";
 
-
-const root = document.getElementById('root');
+const root = document.getElementById("root");
 
 const virtualDOM = (
   <div className="container">
@@ -20,7 +18,7 @@ const virtualDOM = (
     2, 3
     <input type="text" value="13" />
   </div>
-)
+);
 
 const modifyDOM = (
   <div className="container">
@@ -38,35 +36,53 @@ const modifyDOM = (
     2, 3
     <input type="text" value="13" />
   </div>
-)
+);
 
 // TinyReact.render(virtualDOM, root)
 
 // console.log('virtualDOM: ', virtualDOM);
 
-const Demo = () => <div>&hearts;</div>
+const Demo = () => <div>&hearts;</div>;
 
-const Heart = (props) => <div>{props.title} <Demo/></div>
+const Heart = (props) => (
+  <div>
+    {props.title} <Demo />
+  </div>
+);
 
 // TinyReact.render(<Heart title="Hello React"/>, root);
 
 class Alert extends TinyReact.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      title: "Hello React",
+    };
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    this.setState({ title: "changed title" });
   }
 
   render() {
-    return <div>
-    {this.props.title}
-    {this.props.age}
-    </div>
+    return (
+      <div>
+        {this.props.name}
+        {this.props.age}
+        <div>
+          {this.state.title}
+          <button onClick={this.handleClick}>点我改变title</button>
+        </div>
+      </div>
+    );
   }
 }
 
-// TinyReact.render(<Alert title="Hello React" age={18}/>, root);
+TinyReact.render(<Alert name="Christine" age={18} />, root);
 
-TinyReact.render(virtualDOM, root);
+// TinyReact.render(virtualDOM, root);
 
-setTimeout(() => {
-  TinyReact.render(modifyDOM, root);
-}, 2000)
+// setTimeout(() => {
+//   TinyReact.render(modifyDOM, root);
+// }, 2000)
