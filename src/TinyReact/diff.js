@@ -7,6 +7,8 @@ import isFunction from "./isFunction";
 import diffComponent from "./diffComponent";
 
 export default function diff(virtualDOM, container, oldDOM) {
+  console.log("virtualDOM: ", virtualDOM);
+  console.log("oldDOM: ", oldDOM);
   const oldVirtualDOM = oldDOM?._virtualDOM;
 
   // 判断 旧节点 是否存在
@@ -30,10 +32,34 @@ export default function diff(virtualDOM, container, oldDOM) {
       // 更新元素节点属性
       updateNodeElement(oldDOM, virtualDOM.props, oldVirtualDOM.props);
     }
-    // 对比子节点
-    virtualDOM.children.forEach((child, i) => {
-      diff(child, oldDOM, oldDOM.childNodes[i]);
+
+    // 存储包含 key 的集合
+    const keysMap = new Map();
+    oldDOM.childNodes.forEach((dom) => {
+      // 1 代表元素节点
+      if (dom.nodeType === 1) {
+        const key = dom.getAttribute("key");
+        key && keysMap.set(Number(key), dom);
+      }
     });
+
+    if (keysMap.size) {
+      virtualDOM.children.forEach((child, i) => {
+        const domElement = keysMap.get(child.props.key);
+        if (domElement) {
+          if (oldDOM.childNodes[i] !== domElement) {
+            oldDOM.insertBefore(domElement, oldDOM.childNodes[i]);
+          }
+        } else {
+          mountElement(child, oldDOM, oldDOM.childNodes[i]);
+        }
+      });
+    } else {
+      // 递归对比 Virtual DOM 的子元素
+      virtualDOM.children.forEach((child, i) => {
+        diff(child, oldDOM, oldDOM.childNodes[i]);
+      });
+    }
 
     // 删除节点-发生在节点更新以后并且发生在同一个父节点下的所有子节点身上
     // 获取旧节点

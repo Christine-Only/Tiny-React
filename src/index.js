@@ -115,4 +115,55 @@ class DemoRef extends TinyReact.Component {
   }
 }
 
-TinyReact.render(<DemoRef />, root);
+// TinyReact.render(<DemoRef />, root);
+
+class DemoKey extends TinyReact.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      list: [
+        {
+          name: "zs",
+          id: 1,
+        },
+        {
+          name: "ls",
+          id: 2,
+        },
+        {
+          name: "we",
+          id: 3,
+        },
+        {
+          name: "mz",
+          id: 4,
+        },
+      ],
+    };
+
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    const list = JSON.parse(JSON.stringify(this.state.list));
+    // list.push(list.shift());
+    list.splice(2, 0, { name: "lk", id: 100 });
+    console.log("list: ", list);
+    this.setState({ list });
+  }
+
+  render() {
+    return (
+      <div>
+        <ul>
+          {this.state.list.map((item) => (
+            <li key={item.id}>{item.name}</li>
+          ))}
+        </ul>
+        <button onClick={this.handleClick}>按钮</button>
+      </div>
+    );
+  }
+}
+
+TinyReact.render(<DemoKey />, root);
