@@ -22,4 +22,25 @@ export default class Component {
   getCOM() {
     return this._dom;
   }
+
+  updateProps(props) {
+    this.props = props;
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    console.log("getDerivedStateFromProps - nextProps", nextProps);
+  }
+
+  componentDidMount() {
+    console.log("componentDidMount");
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log("shouldComponentUpdate");
+    return JSON.stringify(this.props) === JSON.stringify(nextProps);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    console.log("componentDidUpdate - prevProps", prevProps);
+  }
 }

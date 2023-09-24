@@ -83,6 +83,8 @@ TinyReact.render(<Alert name="Christine" age={18} />, root);
 
 // TinyReact.render(virtualDOM, root);
 
-// setTimeout(() => {
-//   TinyReact.render(modifyDOM, root);
-// }, 2000)
+setTimeout(() => {
+  // TinyReact.render(modifyDOM, root);
+  // TinyReact.render(<Heart title="Hello React" />, root);
+  TinyReact.render(<Alert name="Picker" age={22} />, root);
+}, 2000);

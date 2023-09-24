@@ -2,7 +2,7 @@ import isFunction from "./isFunction";
 import isFunctionComponent from "./isFunctionComponent";
 import mountNativeElement from "./mountNativeElement";
 
-export default function mountComponent(virtualDOM, container) {
+export default function mountComponent(virtualDOM, container, oldDOM) {
   let newVirtualDOM = null;
   // 判断组件是类组件还是函数组件
   if (isFunctionComponent(virtualDOM)) {
@@ -14,10 +14,10 @@ export default function mountComponent(virtualDOM, container) {
   // 判断得到的 Virtual Dom 是否是组件
   if (isFunction(newVirtualDOM)) {
     // 如果是组件 继续调用 mountComponent 解剖组件
-    mountComponent(newVirtualDOM, container);
+    mountComponent(newVirtualDOM, container, oldDOM);
   } else {
     // 如果是 普通的Virtual DOM对象 就去渲染
-    mountNativeElement(newVirtualDOM, container);
+    mountNativeElement(newVirtualDOM, container, oldDOM);
   }
 }
 

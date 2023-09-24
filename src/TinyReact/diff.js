@@ -3,12 +3,20 @@ import mountElement from "./mountElement";
 import updateNodeElement from "./updateNodeElement";
 import updateTextNode from "./updateTextNode";
 import unmountNode from "./unmountNode";
+import isFunction from "./isFunction";
+import diffComponent from "./diffComponent";
 
 export default function diff(virtualDOM, container, oldDOM) {
+  console.log("virtualDOM: ", virtualDOM);
   const oldVirtualDOM = oldDOM?._virtualDOM;
+
   // 判断 旧节点 是否存在
   if (!oldDOM) {
     mountElement(virtualDOM, container);
+  } else if (isFunction(virtualDOM)) {
+    // 判断要更新的组件是否是组件
+    // 对比组件
+    diffComponent(virtualDOM, container, oldDOM);
   } else if (virtualDOM.type !== oldVirtualDOM?.type) {
     // 根据 Virtual DOM 创建真实 DOM 元素
     const newElement = createDOMElement(virtualDOM);
@@ -30,7 +38,7 @@ export default function diff(virtualDOM, container, oldDOM) {
 
     // 删除节点-发生在节点更新以后并且发生在同一个父节点下的所有子节点身上
     // 获取旧节点
-    let oldChildNodes = oldDOM.childNodes;
+    const oldChildNodes = oldDOM.childNodes;
     // 如果旧节点的数量多于要渲染的新节点的长度
     if (oldChildNodes.length > virtualDOM.children.length) {
       for (
