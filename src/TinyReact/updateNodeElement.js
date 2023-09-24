@@ -18,6 +18,9 @@ export default function updateNodeElement(element, newProps, oldProps = {}) {
         if (propName === "className") {
           element.setAttribute("class", newPropsValue);
         } else {
+          if (propName === "ref" && typeof newPropsValue === "function") {
+            newPropsValue(element);
+          }
           element.setAttribute(propName, newPropsValue);
         }
       }

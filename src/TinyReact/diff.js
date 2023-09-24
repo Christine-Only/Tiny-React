@@ -7,7 +7,6 @@ import isFunction from "./isFunction";
 import diffComponent from "./diffComponent";
 
 export default function diff(virtualDOM, container, oldDOM) {
-  console.log("virtualDOM: ", virtualDOM);
   const oldVirtualDOM = oldDOM?._virtualDOM;
 
   // 判断 旧节点 是否存在

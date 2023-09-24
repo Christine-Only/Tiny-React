@@ -4,11 +4,14 @@ import mountNativeElement from "./mountNativeElement";
 
 export default function mountComponent(virtualDOM, container, oldDOM) {
   let newVirtualDOM = null;
+  let component = null;
   // 判断组件是类组件还是函数组件
   if (isFunctionComponent(virtualDOM)) {
     newVirtualDOM = buildFunctionComponent(virtualDOM);
   } else {
     newVirtualDOM = buildClassComponent(virtualDOM);
+    // 获取类组件实例对象
+    component = newVirtualDOM.component;
   }
 
   // 判断得到的 Virtual Dom 是否是组件
@@ -18,6 +21,13 @@ export default function mountComponent(virtualDOM, container, oldDOM) {
   } else {
     // 如果是 普通的Virtual DOM对象 就去渲染
     mountNativeElement(newVirtualDOM, container, oldDOM);
+  }
+
+  // 如果类组件实例对象存在的话
+  if (component) {
+    component.componentDidMount();
+    // 判断组件实例对象身上是否有 props 属性 props 属性中是否有 ref 属性
+    component.props?.ref?.(component);
   }
 }
 
